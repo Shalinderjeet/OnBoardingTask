@@ -8,6 +8,7 @@ import "reactjs-popup/dist/index.css";
 
 import StoreTable from "./StoreTable";
 import Confirmation from '../Global/confirmation';
+import _ from "lodash";
 
 export class Stores extends Component {
   constructor(props) {
@@ -16,7 +17,12 @@ export class Stores extends Component {
       stores: [],
       isFormOpen: false,
       tempFormData: {},
-      isShowConfim : false
+      isShowConfim : false,
+      pageSize:5,
+      pageCount:0,
+      paginatedPosts:[],
+
+
     };
   }
 
@@ -30,6 +36,16 @@ export class Stores extends Component {
       if (data) {
         const stateData = { ...this.state };
         stateData.stores = data;
+        let len=data.length;
+        console.log("This is new length");
+        console.log(len);
+        let p=stateData.pageSize;
+        console.log(p);
+        let newlen=Math.ceil(len/p);
+        console.log(newlen);
+        stateData.pageCount=newlen;
+        console.log(stateData.pageCount);
+        stateData.paginatedPosts=_(data).slice(0).take(p).value();
         this.setState(stateData);
       }
     } catch (error) {
@@ -106,8 +122,24 @@ export class Stores extends Component {
     stateData.isFormOpen = true;
     this.setState(stateData);
   };
+  onPage=(p)=>{
+    const stateData = { ...this.state };
+    stateData.paginatedPosts=p;
+    this.setState(stateData);
+  
+  }
   render() {
     const { stores } = this.state;
+    const{paginatedPosts}=this.state;
+    const{pageCount}=this.state;
+    const{pageSize}=this.state;
+    
+    console.log("I am here");
+    console.log(pageCount);
+    const pages=_.range(1,pageCount+1);
+    console.log("Final");
+    console.log(pages);
+
     return (
       <div>
         <div>
@@ -131,6 +163,10 @@ export class Stores extends Component {
           </Button>
           <StoreTable
             stores={stores}
+            pages={pages}
+            pageSize={pageSize}
+            onSave={this.onPage}
+            paginatedPosts={paginatedPosts}
             deleteReq = {(deleteData) => this.showDeleteConfim(deleteData)}
             getData={(editData) => this.fillEditData(editData)}
           />

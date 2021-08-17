@@ -7,6 +7,7 @@ import { Button} from "semantic-ui-react";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import Confirmation from '../Global/confirmation';
+import _ from "lodash";
 
 export class Customers extends Component {
   constructor(props) {
@@ -15,7 +16,11 @@ export class Customers extends Component {
       customers: [],
       isFormOpen: false,
       tempFormData: {},
-      isShowConfim : false
+      isShowConfim : false,
+      pageSize:5,
+      pageCount:0,
+      paginatedPosts:[],
+      
     };
   }
 
@@ -28,13 +33,24 @@ export class Customers extends Component {
       if (data) {
         const stateData = { ...this.state };
         stateData.customers = data;
+        let len=data.length;
+        console.log("This is new length");
+        console.log(len);
+        let p=stateData.pageSize;
+        console.log(p);
+        let newlen=Math.ceil(len/p);
+        console.log(newlen);
+        stateData.pageCount=newlen;
+        console.log(stateData.pageCount);
+        stateData.paginatedPosts=_(data).slice(0).take(p).value();
         this.setState(stateData);
+
       }
     } catch (error) {
       console.log(error);
     }
   };
-
+  
   submitCustomData = async (requestPayload) => {
     try {
          console.log(requestPayload.customerId);
@@ -113,10 +129,24 @@ export class Customers extends Component {
       this.setState(stateData);
     }
   };
+ onPage=(p)=>{
+  const stateData = { ...this.state };
+  stateData.paginatedPosts=p;
+  this.setState(stateData);
 
+}
 
   render() {
     const { customers } = this.state;
+    const{paginatedPosts}=this.state;
+    const{pageCount}=this.state;
+    const{pageSize}=this.state;
+    
+    console.log("I am here");
+    console.log(pageCount);
+    const pages=_.range(1,pageCount+1);
+    console.log("Final");
+    console.log(pages);
     return (
       <div>
         <div>
@@ -131,6 +161,7 @@ export class Customers extends Component {
                 cancel={() => this.toggle()}
                 submit={(data) => this.onSubmitEditData(data)}
                 editData={this.state.tempFormData}
+              
               ></MyForm>
             </div>
           </Popup>
@@ -140,6 +171,10 @@ export class Customers extends Component {
           </Button>
           <CustomerTable
             customers={customers}
+            pages={pages}
+            pageSize={pageSize}
+            onSave={this.onPage}
+            paginatedPosts={paginatedPosts}
             getData={(editData) => this.fillEditData(editData)}
             deleteReq = {(deleteData) => this.showDeleteConfim(deleteData)}
           />

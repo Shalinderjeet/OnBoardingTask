@@ -4,7 +4,7 @@ const serviceObj = {
     return axios
       .get("/api/Customers")
       .then(({ data }) => {
-        // console.log(res.data);
+        
         return data;
       })
       .catch((err) => {
