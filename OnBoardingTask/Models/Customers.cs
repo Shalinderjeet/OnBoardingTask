@@ -15,7 +15,7 @@ namespace OnBoardingTask.Models
             Sales = new HashSet<Sales>();
         }
 
-        public int CustomerId { get; set; }
+        public int Id { get; set; }
         
         public string Name { get; set; }
         

@@ -21,6 +21,7 @@ export class Stores extends Component {
       pageSize:5,
       pageCount:0,
       paginatedPosts:[],
+      
 
 
     };
@@ -55,7 +56,7 @@ export class Stores extends Component {
 
   submitStoresData = async (requestPayload) => {
          try {       
-    const data = await serviceObj[requestPayload.storeId ? 'putStores' : 'postStores'](requestPayload);
+    const data = await serviceObj[requestPayload.id ? 'putStores' : 'postStores'](requestPayload);
         this.fetchStores();
     } catch (error) {
       console.log(error);
@@ -64,10 +65,13 @@ export class Stores extends Component {
   deleteCustomData = async (requestPayload) => {
     try {
       const data = await serviceObj.deleteStores(requestPayload);
+      
       this.fetchStores();
       const state = {...this.state};
       state.tempFormData = {};
       this.setState(state);
+      
+      
     } catch (error) {
       console.log(error);
     }

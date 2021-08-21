@@ -1,9 +1,9 @@
 import React from 'react'
 import { Table } from 'semantic-ui-react'
 import { Button, Form } from 'semantic-ui-react'
-//import ButtonExampleShorthand from './ButtonExampleShorthand';
 import _ from "lodash";
 import { useState } from 'react';
+import  './store.css';
 
 
 
@@ -59,7 +59,7 @@ return(
 
     
   </Table>
-  <nav className="d-flex justify-content-center">
+  <div className="d-flex pagination-block">
     <ul className="pagination">
        {
          pages.map((page)=>(
@@ -77,7 +77,7 @@ return(
          ))
        }
     </ul>
-  </nav>
+  </div>
   </div>
 )
 }

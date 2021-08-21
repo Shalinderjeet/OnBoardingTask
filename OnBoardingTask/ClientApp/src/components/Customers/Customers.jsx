@@ -8,24 +8,30 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import Confirmation from '../Global/confirmation';
 import _ from "lodash";
+import Toaster from "../Global/toaster";
 
 export class Customers extends Component {
   constructor(props) {
     super(props);
     this.state = {
       customers: [],
+      sales:[],
       isFormOpen: false,
       tempFormData: {},
       isShowConfim : false,
       pageSize:5,
       pageCount:0,
       paginatedPosts:[],
+      errorPage:"",
+      isShowToaster: false,
+      toasterMsg: ''
       
     };
   }
 
   componentDidMount() {
     this.fetchCustomers();
+    this.fetchSales();
   }
   fetchCustomers = async () => {
     try {
@@ -50,11 +56,28 @@ export class Customers extends Component {
       console.log(error);
     }
   };
+  fetchSales= async () => {
+    try {
+      const data = await serviceObj.getSales();
+      if (data) {
+        console.log("I am sales data");
+        console.log(data);
+        const stateData = { ...this.state };
+        stateData.sales = data;
+        this.setState(stateData);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   
+  };  
   submitCustomData = async (requestPayload) => {
     try {
-         console.log(requestPayload.customerId);
-      const data = await serviceObj[requestPayload.customerId ? 'putCustomers' : 'postCustomers'](requestPayload);
+      console.log("Testing id");
+      console.log(requestPayload);
+         console.log(requestPayload.id);
+         console.log("I am in submit Custom data");
+      const data = await serviceObj[requestPayload.id ? 'putCustomers' : 'postCustomers'](requestPayload);
         this.fetchCustomers();
     } catch (error) {
       console.log(error);
@@ -62,6 +85,8 @@ export class Customers extends Component {
   };
   EditCustomData = async (requestPayload) => {
     try {
+      console.log("Main request payload");
+      console.log(requestPayload);
       const data = await serviceObj.putCustomers(requestPayload);
       if (data) {
         this.fetchCustomers();
@@ -74,11 +99,20 @@ export class Customers extends Component {
   deleteCustomData = async (requestPayload) => {
     try {
       const data = await serviceObj.deleteCustomers(requestPayload);
+      //console.log(data);
+      if(data){
+        console.log("I m living");
       this.fetchCustomers();
       const state = {...this.state};
       state.tempFormData = {};
       this.setState(state);
+      }
+      else{
+        this.toasterShow('This customer cannot be deleted as he has sales associated');      
+      }
+          
     } catch (error) {
+      console.log("You cannot delete this customer");
       console.log(error);
     }
   };
@@ -90,6 +124,7 @@ export class Customers extends Component {
   };
 
   fillEditData = (editData) => {
+    console.log("filledit dataa");
     console.log(editData);
     const stateData = { ...this.state };
     stateData.tempFormData = editData;
@@ -98,6 +133,10 @@ export class Customers extends Component {
   };
 
   showDeleteConfim = (deleteData) => {
+   
+   console.log("I am delete data");
+   console.log(deleteData);
+   
     const stateData = { ...this.state };
     stateData.isShowConfim = true;
     if (deleteData) {
@@ -107,6 +146,7 @@ export class Customers extends Component {
   };
 
   onSubmitEditData = (editData) => {
+    console.log("onSubmit edit data");
     this.toggle();
     this.submitCustomData(editData);
   };
@@ -136,6 +176,20 @@ export class Customers extends Component {
 
 }
 
+
+toasterShow(msg) {
+    const copyObj = {...this.state};
+    copyObj['toasterMsg'] = msg;
+    copyObj['isShowToaster'] = true;
+    this.setState(copyObj);
+    setTimeout(() => {
+      const copyObj = {...this.state};
+      copyObj['toasterMsg'] = '';
+      copyObj['isShowToaster'] = false;
+      this.setState(copyObj);
+    }, 3000)
+}
+
   render() {
     const { customers } = this.state;
     const{paginatedPosts}=this.state;
@@ -148,6 +202,7 @@ export class Customers extends Component {
     console.log("Final");
     console.log(pages);
     return (
+                 
       <div>
         <div>
           <Popup
@@ -185,6 +240,10 @@ export class Customers extends Component {
           <Confirmation response = {(data) => this.responseFromConfirmation(data)}></Confirmation>
             : ''
         }
+        {
+          (this.state.isShowToaster)?
+           <Toaster message = {this.state.toasterMsg} />:''
+        }    
         </div>
     );
   }

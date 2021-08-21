@@ -1,0 +1,7 @@
+.pagination-block {
+    justify-content: flex-end;
+}
+
+.pagination-block li.page-item {
+    padding: 0 10px;
+}

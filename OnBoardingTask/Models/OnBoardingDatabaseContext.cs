@@ -29,7 +29,7 @@ namespace OnBoardingTask.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-16EOANV\\SQLEXPRESS;Database=OnBoardingDatabase;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-16EOANV\\SQLEXPRESS;Database=OnBoardingDatabase2;Integrated Security=True");
             }
         }
 
@@ -37,7 +37,7 @@ namespace OnBoardingTask.Models
         {
             modelBuilder.Entity<Customers>(entity =>
             {
-                entity.HasKey(e => e.CustomerId);
+                entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Address)
                     .IsRequired()
@@ -52,7 +52,7 @@ namespace OnBoardingTask.Models
 
             modelBuilder.Entity<Products>(entity =>
             {
-                entity.HasKey(e => e.ProductId);
+                entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -64,7 +64,7 @@ namespace OnBoardingTask.Models
 
             modelBuilder.Entity<Sales>(entity =>
             {
-                entity.HasIndex(e => e.CustomerId);
+                entity.HasIndex(e => e.Id);
 
                 entity.HasIndex(e => e.ProductId);
 
@@ -72,20 +72,25 @@ namespace OnBoardingTask.Models
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Sales)
-                    .HasForeignKey(d => d.CustomerId);
-
+                    .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("CustomerFK");
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Sales)
-                    .HasForeignKey(d => d.ProductId);
+                    .HasForeignKey(d => d.ProductId)
+                     .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("ProductFK");
 
                 entity.HasOne(d => d.Store)
                     .WithMany(p => p.Sales)
-                    .HasForeignKey(d => d.StoreId);
+                    .HasForeignKey(d => d.StoreId)
+                     .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("StoreFK");
             });
 
             modelBuilder.Entity<Stores>(entity =>
             {
-                entity.HasKey(e => e.StoreId);
+                entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Address)
                     .IsRequired()

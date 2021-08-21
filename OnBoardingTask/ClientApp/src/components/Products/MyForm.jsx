@@ -3,7 +3,7 @@ import { Button, Form } from "semantic-ui-react";
 const MyForm = (props) => {
   const [productName, setProductName] = useState(props.editData.name || '');
   const [productPrice, setProductPrice] = useState(props.editData.price ||'');
-  const [productId,setProductId] =useState(props.editData.productId ||'');
+  const [id,setId] =useState(props.editData.id ||'');
   const onProductNameChangeHandler=(event)=>{
     setProductName(event.target.value);
   };
@@ -17,7 +17,7 @@ const MyForm = (props) => {
     const newProduct={
       name:productName,
       price:productPrice,
-      productId: productId
+      id: id
     };
     props.onSaveProductData(newProduct);  
    };

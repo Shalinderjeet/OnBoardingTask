@@ -11,8 +11,18 @@ const serviceObj = {
         return err;
       });
   },
+  getSales: function () {
+    return axios
+      .get("/api/Sales")
+      .then(({ data }) => {
+        return data;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
   postCustomers: function (requestPayload) {
-      delete requestPayload.customerId;
+      delete requestPayload.id;
     return axios
       .post("/api/Customers", requestPayload)
       .then(({ data }) => {
@@ -23,8 +33,9 @@ const serviceObj = {
       });
   },
   putCustomers: function (requestPayload) {
+    
     return axios
-      .put("/api/Customers" + '/' + requestPayload.customerId, requestPayload)
+      .put("/api/Customers" + '/' + requestPayload.id, requestPayload)
       .then(({ data }) => {
         return data ? true : false;
       })
@@ -33,13 +44,15 @@ const serviceObj = {
       });
   },
   deleteCustomers: function (requestPayload) {
+    console.log("I am inside delete Customers");
+    console.log(requestPayload.id);
     return axios
-      .delete("/api/Customers"  + '/' + requestPayload.customerId, requestPayload)
+      .delete("/api/Customers"  + '/' + requestPayload.id, requestPayload)
       .then(({ data }) => {
         return data ? true : false;
       })
       .catch((err) => {
-        return err;
+        return err.response.data;
       });
   },
 };

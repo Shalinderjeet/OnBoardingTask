@@ -10,10 +10,11 @@ getProducts : function() {
         })
 },
 postProducts : function(requestPayload) {
-    delete requestPayload.productId;
+    delete requestPayload.id;
    
 requestPayload.price=Number.parseFloat(requestPayload.price);
     console.log("final end");
+    console.log(requestPayload);
     return axios
       .post("/api/Products", requestPayload)
       .then(({ data }) => {
@@ -24,15 +25,15 @@ requestPayload.price=Number.parseFloat(requestPayload.price);
       });
 },
 putProducts : function(requestPayload) {
-    return axios.put("/api/Products" + '/' + requestPayload.productId, requestPayload)
+    return axios.put("/api/Products" + '/' + requestPayload.id, requestPayload)
         .then(({ data }) => { return (data) ? true : false}).catch(err => {
             return err;
         })
 },
 deleteProducts:function(requestPayload){
-    return axios.delete("/api/Products" + '/' + requestPayload.productId, requestPayload)
+    return axios.delete("/api/Products" + '/' + requestPayload.id, requestPayload)
         .then(({ data }) => { return (data) ? true : false}).catch(err => {
-            return err;
+            return err.response.data;
         })
 }
 }

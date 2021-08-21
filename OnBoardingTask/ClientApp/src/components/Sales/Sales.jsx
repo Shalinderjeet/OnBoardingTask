@@ -42,18 +42,18 @@ export class Sales extends Component {
     try {
       const data = await serviceObj.getSales();
       if (data) {
-        console.log(data);
+        
         const stateData = { ...this.state };
         stateData.sales = data;
         let len=data.length;
-        console.log("This is new length");
-        console.log(len);
+        
+        
         let p=stateData.pageSize;
-        console.log(p);
+      
         let newlen=Math.ceil(len/p);
-        console.log(newlen);
+      
         stateData.pageCount=newlen;
-        console.log(stateData.pageCount);
+        
         stateData.paginatedPosts=_(data).slice(0).take(p).value();
         this.setState(stateData);
       }
@@ -109,11 +109,14 @@ export class Sales extends Component {
   deleteCustomData = async (requestPayload) => {
     try {
       const data = await serviceObj.deleteSales(requestPayload);
+      console.log(data);
+      console.log("I am front API error");
       this.fetchSales();
       const state = {...this.state};
       state.tempFormData = {};
       this.setState(state);
     } catch (error) {
+      console.log("I am in catching error");
       console.log(error);
     }
   };
@@ -130,16 +133,17 @@ export class Sales extends Component {
   };
   fillEditData = (editData) => {
     console.log(editData);
+    console.log("lets edit");
     const stateData = { ...this.state };
     const tempData = {
       dateSold : editData.dateSold || '',
-      customerId: editData.customer.customerId || '',
-      productId: editData.product.productId || '',
-      storeId: editData.store.storeId || '',
+      customerId: editData.customerId || '',
+      productId: editData.productId || '',
+      storeId: editData.storeId || '',
       customerName: editData.customer.name || '',
       productName: editData.product.name || '',
       storeName: editData.store.name || '',
-      salesId : editData.salesId || '',
+      id : editData.id || '',
 
     }
     stateData.tempFormData = tempData;
@@ -147,6 +151,8 @@ export class Sales extends Component {
     this.setState(stateData);
   };
   showDeleteConfim = (deleteData) => {
+    
+    
     const stateData = { ...this.state };
     stateData.isShowConfim = true;
     if (deleteData) {
@@ -162,15 +168,16 @@ export class Sales extends Component {
     this.setState(stateData);
   };
   onSubmitEditData = (editData) => {
-    console.log("I have fetched some below data");
+  
     console.log(editData);
+    console.log("my final data before submission");
     this.toggle();
     this.submitCustomData(editData);
   };
   submitCustomData = async (requestPayload) => {
     try {
-         //console.log(requestPayload.salesId);
-      const data = await serviceObj[requestPayload.salesId ? 'putSales' : 'postSales'](requestPayload);
+         console.log("1st entry");
+      const data = await serviceObj[requestPayload.id ? 'putSales' : 'postSales'](requestPayload);
         this.fetchSales();
     } catch (error) {
       console.log(error);
@@ -186,16 +193,14 @@ export class Sales extends Component {
   render() {
     const { sales,customers,products,stores } = this.state;
     const{paginatedPosts}=this.state;
-    console.log("Aukha");
-    console.log(paginatedPosts);
+    
+    
     const{pageCount}=this.state;
     const{pageSize}=this.state;
     
-    console.log("I am here");
-    console.log(pageCount);
+    
     const pages=_.range(1,pageCount+1);
-    console.log("Final");
-    console.log(pages);
+    
 
     return (
 

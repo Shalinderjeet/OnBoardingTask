@@ -4,6 +4,7 @@ import { Button, Form } from 'semantic-ui-react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import _ from "lodash";
 import {useState} from 'react'
+import  './product.css';
 
 
 //import ButtonExampleShorthand from './ButtonExampleShorthand';
@@ -59,7 +60,7 @@ return(
 
     
   </Table>
-  <nav className="d-flex justify-content-center">
+  <div className="d-flex pagination-block">
     <ul className="pagination">
        {
          pages.map((page)=>(
@@ -77,7 +78,7 @@ return(
          ))
        }
     </ul>
-  </nav>
+    </div>
   </div>
 )
 }

@@ -1,0 +1,15 @@
+.toast-block {
+    padding: 20px 20px;
+    border: 1px solid;
+    position: fixed;
+    z-index: 200;
+    background-color: white;
+    top: 0;
+    margin: auto;
+    color:red;
+}
+
+.toaster {
+    display: flex;
+    justify-content: center;
+}

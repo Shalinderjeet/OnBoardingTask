@@ -5,7 +5,7 @@ const MyForm = (props) => {
 
   const [storeName, setStoreName] = useState(props.editData.name || '');
   const [storeAddress, setStoreAddress] = useState(props.editData.address || '');
-  const [storeId,setStoreId] =useState(props.editData.storeId ||'');
+  const [id,setId] =useState(props.editData.id ||'');
   const onStoreNameChangeHandler=(event)=>{
    setStoreName(event.target.value);
   };
@@ -19,7 +19,7 @@ const MyForm = (props) => {
     const newStore={
       name:storeName,
       address:storeAddress,
-      storeId:storeId
+      id:id
 
     };
     props.onSaveStoreData(newStore);  

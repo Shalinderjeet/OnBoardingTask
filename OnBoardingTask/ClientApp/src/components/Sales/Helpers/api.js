@@ -42,28 +42,27 @@ const serviceObj = {
   }
   ,
   postSales: function (requestPayload) {
-    //delete requestPayload.productId;
-      delete requestPayload.salesId;
-      console.log("My request payload");
+    
+      delete requestPayload.id;
+      console.log("My request payload of Sales");
+      console.log("My second entry");
       console.log(requestPayload);
-      requestPayload.cname=Number.parseInt(requestPayload.cname);
-      requestPayload.pname=Number.parseInt(requestPayload.pname);
-      requestPayload.sname=Number.parseInt(requestPayload.sname);
-  
+      console.log("check my above values");
+      
     return axios
       .post("/api/Sales", requestPayload)
       .then(({ data }) => {
-        console.log("Data has been saved");
-        console.log(data);
+       
         return data ? true : false;
       })
       .catch((err) => {
+        console.log("Error aa gya");
         return err;
       });
   },
   putSales: function (requestPayload) {
     return axios
-      .put("/api/Sales" + '/' + requestPayload.salesId, requestPayload)
+      .put("/api/Sales" + '/' + requestPayload.id, requestPayload)
       .then(({ data }) => {
         return data ? true : false;
       })
@@ -73,11 +72,14 @@ const serviceObj = {
   },
   deleteSales: function (requestPayload) {
     return axios
-      .delete("/api/Sales"  + '/' + requestPayload.salesId, requestPayload)
+      .delete("/api/Sales"  + '/' + requestPayload.id, requestPayload)
       .then(({ data }) => {
+        console.log("after delete");
         return data ? true : false;
       })
       .catch((err) => {
+        console.log("API error");
+        console.log(err);
         return err;
       });
   },

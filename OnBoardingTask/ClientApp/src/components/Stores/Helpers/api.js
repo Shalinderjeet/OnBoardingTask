@@ -11,7 +11,7 @@ getStores : function() {
         })
 },
 postStores : function(requestPayload) {
-    delete requestPayload.storeId;
+    delete requestPayload.id;
    
     return axios
       .post("/api/Stores", requestPayload)
@@ -23,13 +23,13 @@ postStores : function(requestPayload) {
       });
 },
 putStores : function(requestPayload) {
-    return axios.put("/api/Stores" + '/' + requestPayload.storeId, requestPayload)
+    return axios.put("/api/Stores" + '/' + requestPayload.id, requestPayload)
         .then(({ data }) => { return (data) ? true : false}).catch(err => {
             return err;
         })
 },
 deleteStores:function(requestPayload){
-    return axios.delete("/api/Stores" + '/' + requestPayload.storeId, requestPayload)
+    return axios.delete("/api/Stores" + '/' + requestPayload.id, requestPayload)
         .then(({ data }) => { return (data) ? true : false}).catch(err => {
             return err;
         })

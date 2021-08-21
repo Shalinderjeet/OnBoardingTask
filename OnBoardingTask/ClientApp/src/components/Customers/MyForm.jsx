@@ -5,7 +5,7 @@ const MyForm = (props) => {
   let [formData, setFormData] = useState({
     name: ((props || {}).editData || {}).name || "",
     address: ((props || {}).editData || {}).address || "",
-    customerId: ((props || {}).editData || {}).customerId || "",
+    id: ((props || {}).editData || {}).id || "",
   });
   const onCancelHandler=()=>{
     props.cancel();

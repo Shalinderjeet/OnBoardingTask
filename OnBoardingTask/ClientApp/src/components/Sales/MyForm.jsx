@@ -8,16 +8,16 @@ const MyForm = (props) => {
   const [customerName, setCustomerName] = useState(props.editData.customerId || '');
   const [productName, setProductName] = useState(props.editData.productId ||'');
   const [storeName,setStoreName]=useState(props.editData.storeId || '');
-  const [salesId,setSalesId]=useState(props.editData.salesId || '');
+  const [id,setId]=useState(props.editData.id || '');
   const onProductNameChangeHandler=(event)=>{
    setProductName(event.target.value);
   };
 
   const onCustomerNameChangeHandler=(event)=>{
-    console.log("inside name");
+    
     console.log(event.target.value);
     setCustomerName(event.target.value);
-    console.log("final value");
+    
   
    };
 
@@ -40,7 +40,7 @@ const MyForm = (props) => {
       productId:productName,
       storeId:storeName,
       dateSold:dateSold,
-      salesId:salesId
+      id:id
     };
     props.onSaveSalesData(newSale);  
    };
@@ -64,7 +64,7 @@ const MyForm = (props) => {
         <select name = "customer" onChange={onCustomerNameChangeHandler} placeholder = "Select Customer" value = {customerName}>
         <option value={''} disabled>Select Customer</option>
          {props.customers.map((c,index)=>{
-         return <option key={index} value={c.customerId}>{c.name}</option>
+         return <option key={index} value={c.id}>{c.name}</option>
          })}        
         </select>   
       </Form.Field>
@@ -74,7 +74,7 @@ const MyForm = (props) => {
          <option value={''} disabled>Select Products</option>
          {props.products.map((p,index)=>{
 
-         return <option key={index} value={p.productId}>{p.name}</option>
+         return <option key={index} value={p.id}>{p.name}</option>
 
          })}        
         </select> 
@@ -88,7 +88,7 @@ const MyForm = (props) => {
          <option value= {''} disabled>Select Store</option>
          {props.stores.map((s,index)=>{
 
-         return <option key={index} value={s.storeId}>{s.name}</option>
+         return <option key={index} value={s.id}>{s.name}</option>
 
          })}        
         </select> 

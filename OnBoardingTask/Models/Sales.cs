@@ -9,7 +9,7 @@ namespace OnBoardingTask.Models
 {
     public partial class Sales
     {
-        public int SalesId { get; set; }
+        public int Id { get; set; }
         public int CustomerId { get; set; }
         public int ProductId { get; set; }
         public int StoreId { get; set; }

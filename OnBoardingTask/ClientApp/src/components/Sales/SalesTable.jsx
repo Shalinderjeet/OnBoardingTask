@@ -3,6 +3,7 @@ import { Table } from 'semantic-ui-react'
 import { Button, Form } from 'semantic-ui-react'
 import _ from "lodash";
 import {useState} from 'react'
+import  './sales.css';
 
 
 const SalesTable = (props) => {
@@ -17,7 +18,7 @@ const SalesTable = (props) => {
     const{sales}=props;
 
     const pagination=(pageNo)=>{
-      console.log("Inside paginated post functiuon");
+      
       setcurrentPage(pageNo);
       const startIndex=(pageNo-1) * pageSize;
       const paginatedPost=_(sales).slice(startIndex).take(pageSize).value();
@@ -62,7 +63,7 @@ return(
 
     
   </Table>
-  <nav className="d-flex justify-content-center">
+  <div className="d-flex pagination-block">
     <ul className="pagination">
        {
          pages.map((page)=>(
@@ -80,7 +81,7 @@ return(
          ))
        }
     </ul>
-  </nav>
+  </div>
   </div>
 )
 }

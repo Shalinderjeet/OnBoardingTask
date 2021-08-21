@@ -47,7 +47,7 @@ namespace OnBoardingTask.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStores(int id, Stores stores)
         {
-            if (id != stores.StoreId)
+            if (id != stores.Id)
             {
                 return BadRequest();
             }
@@ -82,28 +82,30 @@ namespace OnBoardingTask.Controllers
             _context.Stores.Add(stores);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetStores", new { id = stores.StoreId }, stores);
+            return CreatedAtAction("GetStores", new { id = stores.Id }, stores);
         }
 
         // DELETE: api/Stores/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Stores>> DeleteStores(int id)
         {
-            var stores = await _context.Stores.FindAsync(id);
-            if (stores == null)
-            {
-                return NotFound();
-            }
+             var stores = await _context.Stores.FindAsync(id);
+                if (stores == null)
+                {
+                    return NotFound();
+                }
 
-            _context.Stores.Remove(stores);
-            await _context.SaveChangesAsync();
+                _context.Stores.Remove(stores);
+                await _context.SaveChangesAsync();
 
-            return stores;
+                return stores;
+            
+            
         }
 
         private bool StoresExists(int id)
         {
-            return _context.Stores.Any(e => e.StoreId == id);
+            return _context.Stores.Any(e => e.Id == id);
         }
     }
 }

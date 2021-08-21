@@ -4,6 +4,7 @@ import { Icon, Label, Menu, Pagination, Table } from 'semantic-ui-react'
 import { Button, Form } from 'semantic-ui-react'
 import { createModuleResolutionCache } from 'typescript';
 import _ from "lodash";
+import  './customer.css';
 
 
 const CustomerTable = (props) => {
@@ -57,7 +58,7 @@ return(
 
     
   </Table>
-  <nav className="d-flex justify-content-center">
+  <div className="d-flex pagination-block">
     <ul className="pagination">
        {
          pages.map((page)=>(
@@ -75,7 +76,7 @@ return(
          ))
        }
     </ul>
-  </nav>
+  </div>
   </div>
 )
 }

@@ -47,7 +47,7 @@ namespace OnBoardingTask.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSales(int id, Sales sales)
         {
-            if (id != sales.SalesId)
+            if (id != sales.Id)
             {
                 return BadRequest();
             }
@@ -79,10 +79,18 @@ namespace OnBoardingTask.Controllers
         [HttpPost]
         public async Task<ActionResult<Sales>> PostSales(Sales sales)
         {
-            _context.Sales.Add(sales);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Sales.Add(sales);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSales", new { id = sales.SalesId }, sales);
+                return CreatedAtAction("GetSales", new { id = sales.Id }, sales);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e);
+            }
+           
         }
 
         // DELETE: api/Sales/5
@@ -103,7 +111,7 @@ namespace OnBoardingTask.Controllers
 
         private bool SalesExists(int id)
         {
-            return _context.Sales.Any(e => e.SalesId == id);
+            return _context.Sales.Any(e => e.Id == id);
         }
     }
 }

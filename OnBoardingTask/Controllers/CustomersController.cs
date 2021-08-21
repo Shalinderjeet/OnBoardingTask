@@ -47,7 +47,7 @@ namespace OnBoardingTask.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCustomers(int id, Customers customers)
         {
-            if (id != customers.CustomerId)
+            if (id != customers.Id)
             {
                 return BadRequest();
             }
@@ -82,28 +82,35 @@ namespace OnBoardingTask.Controllers
             _context.Customers.Add(customers);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCustomers", new { id = customers.CustomerId }, customers);
+            return CreatedAtAction("GetCustomers", new { id = customers.Id }, customers);
         }
 
         // DELETE: api/Customers/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Customers>> DeleteCustomers(int id)
         {
-            var customers = await _context.Customers.FindAsync(id);
-            if (customers == null)
+            try
             {
-                return NotFound();
+                var customers = await _context.Customers.FindAsync(id);
+                if (customers == null)
+                {
+                    return NotFound();
+                }
+
+                _context.Customers.Remove(customers);
+                await _context.SaveChangesAsync();
+
+                return customers;
             }
-
-            _context.Customers.Remove(customers);
-            await _context.SaveChangesAsync();
-
-            return customers;
+            catch(Exception e)
+            {
+                return BadRequest("false");
+            }
         }
 
         private bool CustomersExists(int id)
         {
-            return _context.Customers.Any(e => e.CustomerId == id);
+            return _context.Customers.Any(e => e.Id == id);
         }
     }
 }

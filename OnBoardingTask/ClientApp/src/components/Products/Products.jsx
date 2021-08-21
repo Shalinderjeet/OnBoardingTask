@@ -21,6 +21,7 @@ export class Products extends Component {
       pageSize:5,
       pageCount:0,
       paginatedPosts:[],
+      errorPage:""
     };
   }
 
@@ -53,7 +54,7 @@ export class Products extends Component {
 
   submitProductsData = async (requestPayload) => {
     try {          
-         const data = await serviceObj[requestPayload.productId ? 'putProducts' : 'postProducts'](requestPayload);
+         const data = await serviceObj[requestPayload.id ? 'putProducts' : 'postProducts'](requestPayload);
         this.fetchProducts();
     } catch (error) {
       console.log(error);
@@ -86,10 +87,20 @@ export class Products extends Component {
   deleteCustomData = async (requestPayload) => {
     try {
       const data = await serviceObj.deleteProducts(requestPayload);
+      if(data){
       this.fetchProducts();
       const state = {...this.state};
       state.tempFormData = {};
       this.setState(state);
+      }
+      else{
+        console.log(data);
+        const state={...this.state};
+        state.errorPage="This Product cannot be deleted as it has sales associated with it";
+        this.setState(state);
+        console.log(state.errorPage);       
+      }
+
     } catch (error) {
       console.log(error);
     }
